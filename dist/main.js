@@ -4299,7 +4299,8 @@ function normalizeItemName(itemName, originalText) {
 }
 // Parse chat message
 function parseCatalystMessage(text) {
-    var catalystRegex = /The catalyst of alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Match "alteration contained: X x ItemName" - OCR often misses "The catalyst of" at the start
+    var catalystRegex = /alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     var match = text.match(catalystRegex);
     if (match) {
         var quantity = parseInt(match[1]);
@@ -4386,7 +4387,7 @@ function readChatbox() {
         }
         updateChatHistory(chatLine);
         console.log('New chat line:', chatLine);
-        if (chatLine.includes('The catalyst of alteration contained:')) {
+        if (chatLine.includes('alteration contained')) {
             console.log('Processing catalyst line:', chatLine);
             var parsed = parseCatalystMessage(chatLine);
             console.log('Parsed:', parsed);

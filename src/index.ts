@@ -98,7 +98,8 @@ function normalizeItemName(itemName: string, originalText: string): string {
 
 // Parse chat message
 function parseCatalystMessage(text: string): { quantity: number, itemName: string } | null {
-    const catalystRegex = /The catalyst of alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Match "alteration contained: X x ItemName" - OCR often misses "The catalyst of" at the start
+    const catalystRegex = /alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     const match = text.match(catalystRegex);
 
     if (match) {
@@ -200,7 +201,7 @@ function readChatbox() {
 
         console.log('New chat line:', chatLine);
 
-        if (chatLine.includes('The catalyst of alteration contained:')) {
+        if (chatLine.includes('alteration contained')) {
             console.log('Processing catalyst line:', chatLine);
             const parsed = parseCatalystMessage(chatLine);
             console.log('Parsed:', parsed);
