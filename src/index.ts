@@ -8,7 +8,18 @@ if (window.alt1) {
 const timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
 const reader = new ChatBoxReader();
 
-// Use default colors - Alt1's built-in color detection should handle RS3 chat
+// Add the exact catalyst message color from color picker: RGB 20, 127, 7
+reader.readargs = {
+    colors: [
+        a1lib.mixColor(255, 255, 255),  // White - timestamps
+        a1lib.mixColor(255, 255, 0),    // Yellow
+        a1lib.mixColor(255, 128, 0),    // Orange
+        a1lib.mixColor(127, 169, 255),  // Light blue
+        a1lib.mixColor(0, 255, 0),      // Standard green
+        a1lib.mixColor(20, 127, 7),     // CATALYST GREEN - measured with color picker!
+        a1lib.mixColor(255, 0, 0),      // Red
+    ]
+};
 
 // Data storage
 let catalystData: {

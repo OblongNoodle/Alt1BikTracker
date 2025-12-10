@@ -4204,15 +4204,29 @@ var __webpack_exports__ = {};
   !*** ./index.ts ***!
   \******************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1/chatbox */ "../node_modules/alt1/dist/chatbox/index.js");
-/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1 */ "../node_modules/alt1/dist/base/index.js");
+/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alt1/chatbox */ "../node_modules/alt1/dist/chatbox/index.js");
+/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alt1_chatbox__WEBPACK_IMPORTED_MODULE_1__);
+
 
 if (window.alt1) {
     alt1.identifyAppUrl("./appconfig.json");
 }
 var timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
-var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default())();
-// Use default colors - Alt1's built-in color detection should handle RS3 chat
+var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_1___default())();
+// Add the exact catalyst message color from color picker: RGB 20, 127, 7
+reader.readargs = {
+    colors: [
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 255, 255), // White - timestamps
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 255, 0), // Yellow
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 128, 0), // Orange
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(127, 169, 255), // Light blue
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(0, 255, 0), // Standard green
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(20, 127, 7), // CATALYST GREEN - measured with color picker!
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 0, 0), // Red
+    ]
+};
 // Data storage
 var catalystData = {
     totalCatalysts: 0,
