@@ -4355,11 +4355,16 @@ function readChatbox() {
     for (var _i = 0, chatArr_1 = chatArr; _i < chatArr_1.length; _i++) {
         var chatLine = chatArr_1[_i];
         chatLine = chatLine.trim();
+        // Skip empty lines or timestamp-only lines
+        if (!chatLine || chatLine.match(/^\[\d{2}:\d{2}:\d{2}\]$/)) {
+            continue;
+        }
         if (isInHistory(chatLine)) {
             console.log("Found in history: ".concat(chatLine, ", skipping."));
             continue;
         }
         updateChatHistory(chatLine);
+        console.log('New chat line:', chatLine);
         if (chatLine.includes('The catalyst of alteration contained')) {
             console.log('Processing catalyst line:', chatLine);
             var parsed = parseCatalystMessage(chatLine);

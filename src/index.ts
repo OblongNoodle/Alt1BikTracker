@@ -165,12 +165,19 @@ function readChatbox() {
     for (let chatLine of chatArr) {
         chatLine = chatLine.trim();
 
+        // Skip empty lines or timestamp-only lines
+        if (!chatLine || chatLine.match(/^\[\d{2}:\d{2}:\d{2}\]$/)) {
+            continue;
+        }
+
         if (isInHistory(chatLine)) {
             console.log(`Found in history: ${chatLine}, skipping.`);
             continue;
         }
 
         updateChatHistory(chatLine);
+
+        console.log('New chat line:', chatLine);
 
         if (chatLine.includes('The catalyst of alteration contained')) {
             console.log('Processing catalyst line:', chatLine);
