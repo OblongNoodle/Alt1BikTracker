@@ -160,6 +160,15 @@ function updateChatHistory(chatLine: string) {
 
 function readChatbox() {
     const opts = reader.read() || [];
+
+    // Debug: log raw chat lines
+    if (opts.length > 0) {
+        console.log('=== Raw chat lines ===');
+        opts.forEach((line, i) => {
+            console.log(`Line ${i}: "${line.text}"`);
+        });
+    }
+
     const chatArr = processChat(opts);
 
     for (let chatLine of chatArr) {

@@ -4351,6 +4351,13 @@ function updateChatHistory(chatLine) {
 }
 function readChatbox() {
     var opts = reader.read() || [];
+    // Debug: log raw chat lines
+    if (opts.length > 0) {
+        console.log('=== Raw chat lines ===');
+        opts.forEach(function (line, i) {
+            console.log("Line ".concat(i, ": \"").concat(line.text, "\""));
+        });
+    }
     var chatArr = processChat(opts);
     for (var _i = 0, chatArr_1 = chatArr; _i < chatArr_1.length; _i++) {
         var chatLine = chatArr_1[_i];
