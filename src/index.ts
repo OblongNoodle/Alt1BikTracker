@@ -1,6 +1,10 @@
 import * as a1lib from "alt1";
 import ChatBoxReader from "alt1/chatbox";
 
+if (window.alt1) {
+    alt1.identifyAppUrl("./appconfig.json");
+}
+
 // Data storage
 let catalystData = {
     totalCatalysts: 0,
