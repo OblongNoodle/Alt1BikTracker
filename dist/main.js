@@ -4215,7 +4215,7 @@ if (window.alt1) {
 }
 var timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
 var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_1___default())();
-// Add the exact catalyst message color from color picker: RGB 20, 127, 7
+// Add catalyst message colors - both measured and from working apps
 reader.readargs = {
     colors: [
         alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 255, 255), // White - timestamps
@@ -4223,7 +4223,8 @@ reader.readargs = {
         alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 128, 0), // Orange
         alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(127, 169, 255), // Light blue
         alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(0, 255, 0), // Standard green
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(20, 127, 7), // CATALYST GREEN - measured with color picker!
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(20, 127, 7), // Catalyst green - measured with color picker
+        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(30, 255, 0), // Catalyst green - from afk warden
         alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 0, 0), // Red
     ]
 };

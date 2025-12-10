@@ -8,7 +8,7 @@ if (window.alt1) {
 const timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
 const reader = new ChatBoxReader();
 
-// Add the exact catalyst message color from color picker: RGB 20, 127, 7
+// Add catalyst message colors - both measured and from working apps
 reader.readargs = {
     colors: [
         a1lib.mixColor(255, 255, 255),  // White - timestamps
@@ -16,7 +16,8 @@ reader.readargs = {
         a1lib.mixColor(255, 128, 0),    // Orange
         a1lib.mixColor(127, 169, 255),  // Light blue
         a1lib.mixColor(0, 255, 0),      // Standard green
-        a1lib.mixColor(20, 127, 7),     // CATALYST GREEN - measured with color picker!
+        a1lib.mixColor(20, 127, 7),     // Catalyst green - measured with color picker
+        a1lib.mixColor(30, 255, 0),     // Catalyst green - from afk warden
         a1lib.mixColor(255, 0, 0),      // Red
     ]
 };
