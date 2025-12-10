@@ -8,6 +8,18 @@ if (window.alt1) {
 const timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
 const reader = new ChatBoxReader();
 
+// Add colors for reading chat
+reader.readargs = {
+    colors: [
+        a1lib.mixColor(255, 255, 255),  // White
+        a1lib.mixColor(127, 169, 255),  // Blue
+        a1lib.mixColor(0, 255, 255),    // Cyan
+        a1lib.mixColor(255, 152, 31),   // Orange
+        a1lib.mixColor(0, 255, 0),      // Green (catalyst/loot)
+        a1lib.mixColor(255, 0, 0),      // Red
+    ]
+};
+
 // Data storage
 let catalystData = {
     totalCatalysts: 0,
@@ -188,7 +200,7 @@ function readChatbox() {
 
         console.log('New chat line:', chatLine);
 
-        if (chatLine.includes('The catalyst of alteration contained')) {
+        if (chatLine.includes('The catalyst of alteration contained:')) {
             console.log('Processing catalyst line:', chatLine);
             const parsed = parseCatalystMessage(chatLine);
             console.log('Parsed:', parsed);
