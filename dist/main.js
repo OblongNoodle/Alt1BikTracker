@@ -4301,12 +4301,20 @@ function normalizeItemName(itemName, originalText) {
 }
 // Parse chat message
 function parseCatalystMessage(text) {
-    // Match "alteration contained: X x ItemName" - OCR often misses "The catalyst of" at the start
-    var catalystRegex = /alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Match "alteration contained: X x ItemName" - handle OCR typos
+    // Look for: (a|ai)teration contained : number x item
+    var catalystRegex = /(?:a|ai)teration\s+contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     var match = text.match(catalystRegex);
     if (match) {
         var quantity = parseInt(match[1]);
         var itemName = match[2].trim();
+        // Fix common OCR typos in item names
+        itemName = itemName
+            .replace(/seaied/gi, 'Sealed')
+            .replace(/ciue/gi, 'clue')
+            .replace(/scroii/gi, 'scroll')
+            .replace(/eiite/gi, 'elite')
+            .replace(/eiite/gi, 'elite');
         itemName = normalizeItemName(itemName, text);
         return { quantity: quantity, itemName: itemName };
     }
@@ -4397,13 +4405,14 @@ function readChatbox() {
             recentLines.shift(); // Keep only last 5 lines
         }
         // TRIGGER: "sent to your bank" - look back at previous lines!
-        if (chatLine.toLowerCase().includes('sent to your bank')) {
+        if (chatLine.toLowerCase().includes('sent to your bank') || chatLine.toLowerCase().includes('sent to the bank')) {
             console.log('🏦 Found "sent to your bank" - checking previous lines...');
             console.log('Recent lines:', recentLines);
-            // Check the last few lines for catalyst message
+            // Check the last few lines for catalyst message (handle OCR typos)
             for (var i = recentLines.length - 1; i >= 0; i--) {
                 var prevLine = recentLines[i];
-                if (prevLine.includes('alteration contained') || prevLine.includes('aiteration contained')) {
+                if (prevLine.includes('alteration contained') || prevLine.includes('aiteration contained') ||
+                    prevLine.includes('cataiyst') || prevLine.includes('catalyst')) {
                     console.log('📦 Found catalyst message in history!');
                     var parsed = parseCatalystMessage(prevLine);
                     console.log('Parsed:', parsed);
