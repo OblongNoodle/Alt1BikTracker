@@ -4204,28 +4204,15 @@ var __webpack_exports__ = {};
   !*** ./index.ts ***!
   \******************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1 */ "../node_modules/alt1/dist/base/index.js");
-/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alt1/chatbox */ "../node_modules/alt1/dist/chatbox/index.js");
-/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alt1_chatbox__WEBPACK_IMPORTED_MODULE_1__);
-
+/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alt1/chatbox */ "../node_modules/alt1/dist/chatbox/index.js");
+/* harmony import */ var alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(alt1_chatbox__WEBPACK_IMPORTED_MODULE_0__);
 
 if (window.alt1) {
     alt1.identifyAppUrl("./appconfig.json");
 }
 var timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
-var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_1___default())();
-// Add colors for reading chat
-reader.readargs = {
-    colors: [
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 255, 255), // White
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(127, 169, 255), // Blue
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(0, 255, 255), // Cyan
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 152, 31), // Orange
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(0, 255, 0), // Green (catalyst/loot)
-        alt1__WEBPACK_IMPORTED_MODULE_0__.mixColor(255, 0, 0), // Red
-    ]
-};
+var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default())();
+// Use default colors - don't override, let it use all RS3 chat colors
 // Data storage
 var catalystData = {
     totalCatalysts: 0,
