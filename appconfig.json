@@ -1,7 +1,7 @@
 {
   "appName": "Catalyst Tracker",
   "description": "Tracks items received from Catalyst of Alteration",
-  "appUrl": "file:///C:/Users/Oblon/Desktop/Alt1BikTracker/index.html",
+  "appUrl": "./index.html",
   "configUrl": "./appconfig.json",
   "iconUrl": "./icon.png",
   "defaultWidth": 420,
