@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Catalyst Tracker</title>
-    <link rel="stylesheet" href="https://runeapps.org/nis/nis.css">
-    <style>
-        body {
+	<meta charset="UTF-8">
+	<title>Catalyst Tracker</title>
+	<link rel="stylesheet" href="https://runeapps.org/nis/nis.css">
+	<style>
+		body {
             margin: 0;
             padding: 10px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: transparent;
             color: #fff;
         }
-        
+
         .container {
             max-width: 400px;
         }
-        
+
         .header {
             background: rgba(0, 0, 0, 0.8);
             padding: 10px;
@@ -26,34 +26,34 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .stats-container {
             background: rgba(0, 0, 0, 0.8);
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        
+
         .stat-row {
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .stat-row:last-child {
             border-bottom: none;
         }
-        
+
         .stat-label {
             color: #aaa;
         }
-        
+
         .stat-value {
             color: #fff;
             font-weight: bold;
         }
-        
+
         .items-container {
             background: rgba(0, 0, 0, 0.8);
             padding: 15px;
@@ -61,7 +61,7 @@
             max-height: 300px;
             overflow-y: auto;
         }
-        
+
         .item-row {
             display: flex;
             justify-content: space-between;
@@ -70,16 +70,16 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 3px;
         }
-        
+
         .item-name {
             color: #ffa500;
         }
-        
+
         .item-count {
             color: #0f0;
             font-weight: bold;
         }
-        
+
         .button {
             padding: 5px 10px;
             background: #4CAF50;
@@ -89,19 +89,19 @@
             cursor: pointer;
             font-size: 12px;
         }
-        
+
         .button:hover {
             background: #45a049;
         }
-        
+
         .button.danger {
             background: #f44336;
         }
-        
+
         .button.danger:hover {
             background: #da190b;
         }
-        
+
         .status {
             padding: 10px;
             background: rgba(0, 0, 0, 0.8);
@@ -110,73 +110,72 @@
             color: #aaa;
             font-size: 12px;
         }
-        
+
         .status.active {
             color: #0f0;
         }
-        
+
         .status.error {
             color: #f44;
         }
-        
+
         h3 {
             margin: 0 0 10px 0;
             color: #ffa500;
         }
-    </style>
+	</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h2 style="margin: 0;">Catalyst Tracker</h2>
-            <div>
-                <button class="button" id="resetBtn">Reset</button>
-            </div>
-        </div>
-        
-        <div class="stats-container">
-            <h3>Statistics</h3>
-            <div class="stat-row">
-                <span class="stat-label">Total Catalysts Opened:</span>
-                <span class="stat-value" id="totalCatalysts">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Easy Clues:</span>
-                <span class="stat-value" id="easyClues">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Medium Clues:</span>
-                <span class="stat-value" id="mediumClues">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Hard Clues:</span>
-                <span class="stat-value" id="hardClues">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Elite Clues:</span>
-                <span class="stat-value" id="eliteClues">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Master Clues:</span>
-                <span class="stat-value" id="masterClues">0</span>
-            </div>
-        </div>
-        
-        <div class="items-container">
-            <h3>Items Tracked</h3>
-            <div id="itemsList">
-                <div style="color: #aaa; text-align: center; padding: 20px;">
-                    No items tracked yet. Open some catalysts!
-                </div>
-            </div>
-        </div>
-        
-        <div class="status" id="status">
-            Waiting for chat capture...
-        </div>
-    </div>
-    
-    <script src="https://runeapps.org/imagelibs/chat/chatbox.data.js"></script>
-    <script src="app.js"></script>
+<div class="container">
+	<div class="header">
+		<h2 style="margin: 0;">Catalyst Tracker</h2>
+		<div>
+			<button class="button" id="resetBtn">Reset</button>
+		</div>
+	</div>
+
+	<div class="stats-container">
+		<h3>Statistics</h3>
+		<div class="stat-row">
+			<span class="stat-label">Total Catalysts Opened:</span>
+			<span class="stat-value" id="totalCatalysts">0</span>
+		</div>
+		<div class="stat-row">
+			<span class="stat-label">Easy Clues:</span>
+			<span class="stat-value" id="easyClues">0</span>
+		</div>
+		<div class="stat-row">
+			<span class="stat-label">Medium Clues:</span>
+			<span class="stat-value" id="mediumClues">0</span>
+		</div>
+		<div class="stat-row">
+			<span class="stat-label">Hard Clues:</span>
+			<span class="stat-value" id="hardClues">0</span>
+		</div>
+		<div class="stat-row">
+			<span class="stat-label">Elite Clues:</span>
+			<span class="stat-value" id="eliteClues">0</span>
+		</div>
+		<div class="stat-row">
+			<span class="stat-label">Master Clues:</span>
+			<span class="stat-value" id="masterClues">0</span>
+		</div>
+	</div>
+
+	<div class="items-container">
+		<h3>Items Tracked</h3>
+		<div id="itemsList">
+			<div style="color: #aaa; text-align: center; padding: 20px;">
+				No items tracked yet. Open some catalysts!
+			</div>
+		</div>
+	</div>
+
+	<div class="status" id="status">
+		Waiting for chat capture...
+	</div>
+</div>
+
+<script src="./dist/main.js"></script>
 </body>
 </html>
