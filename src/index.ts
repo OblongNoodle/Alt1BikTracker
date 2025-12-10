@@ -230,7 +230,10 @@ window.setTimeout(function () {
 
             // Select the first (top-most) chatbox, like the working app does
             if (reader.pos.boxes && reader.pos.boxes.length > 0) {
+                console.log(`Found ${reader.pos.boxes.length} chatboxes`);
+                console.log('Chatbox details:', reader.pos.boxes);
                 reader.pos.mainbox = reader.pos.boxes[0];
+                console.log('Selected mainbox:', reader.pos.mainbox);
             }
 
             document.getElementById('status')!.textContent = 'Monitoring chatbox...';
