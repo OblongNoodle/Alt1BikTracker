@@ -228,6 +228,11 @@ window.setTimeout(function () {
         } else {
             clearInterval(findChat);
 
+            // Select the first (top-most) chatbox, like the working app does
+            if (reader.pos.boxes && reader.pos.boxes.length > 0) {
+                reader.pos.mainbox = reader.pos.boxes[0];
+            }
+
             document.getElementById('status')!.textContent = 'Monitoring chatbox...';
             document.getElementById('status')!.classList.add('active');
             document.getElementById('status')!.classList.remove('error');
