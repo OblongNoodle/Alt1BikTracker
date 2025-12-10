@@ -4279,7 +4279,8 @@ function normalizeItemName(itemName, originalText) {
 }
 // Parse chat message
 function parseCatalystMessage(text) {
-    var catalystRegex = /The catalyst of alteration contained:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Handle space before colon and be flexible with format
+    var catalystRegex = /The catalyst of alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     var match = text.match(catalystRegex);
     if (match) {
         var quantity = parseInt(match[1]);
@@ -4335,10 +4336,20 @@ function readChat() {
     try {
         var chat = chatReader.read();
         if (chat) {
-            chat.forEach(function (line) {
+            for (var i = 0; i < chat.length; i++) {
+                var line = chat[i];
                 var lineText = line.text.trim();
-                if (!lastChatLines.includes(lineText) && lineText.includes('The catalyst of alteration contained:')) {
-                    var parsed = parseCatalystMessage(lineText);
+                if (!lastChatLines.includes(lineText) && lineText.includes('The catalyst of alteration contained')) {
+                    // Check if next line has the difficulty
+                    var fullText = lineText;
+                    if (i + 1 < chat.length) {
+                        var nextLine = chat[i + 1].text.trim();
+                        // If next line is just a difficulty marker, append it
+                        if (nextLine.match(/^\((easy|medium|hard|elite|master)\)$/i)) {
+                            fullText = lineText + ' ' + nextLine;
+                        }
+                    }
+                    var parsed = parseCatalystMessage(fullText);
                     if (parsed) {
                         catalystData.totalCatalysts++;
                         if (catalystData.items[parsed.itemName]) {
@@ -4355,7 +4366,7 @@ function readChat() {
                         console.log("Catalyst opened: ".concat(parsed.quantity, "x ").concat(parsed.itemName));
                     }
                 }
-            });
+            }
             lastChatLines = chat.slice(0, 10).map(function (line) { return line.text.trim(); });
         }
     }
