@@ -1,6 +1,13 @@
 import * as a1lib from "alt1";
 import ChatBoxReader from "alt1/chatbox";
 
+if (window.alt1) {
+    alt1.identifyAppUrl("./appconfig.json");
+}
+
+const timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
+const reader = new ChatBoxReader();
+
 // Data storage
 let catalystData = {
     totalCatalysts: 0,
@@ -13,6 +20,8 @@ let catalystData = {
         master: 0
     }
 };
+
+let chatHistory: string[] = [];
 
 // Load saved data
 function loadData() {
@@ -77,7 +86,6 @@ function normalizeItemName(itemName: string, originalText: string): string {
 
 // Parse chat message
 function parseCatalystMessage(text: string): { quantity: number, itemName: string } | null {
-    // Handle space before colon and be flexible with format
     const catalystRegex = /The catalyst of alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     const match = text.match(catalystRegex);
 
@@ -103,90 +111,116 @@ function updateClueCount(itemName: string, quantity: number) {
     }
 }
 
-// Chat reader
-let chatReader: ChatBoxReader;
-let lastChatLines: string[] = [];
+// Process chat (ComponentCounter method)
+function processChat(opts: any[]) {
+    let chatStr = "";
+    let chatArr: string[] = [];
 
-function setupChatReader() {
-    if (!window.alt1) {
-        document.getElementById('status')!.textContent = 'Alt1 Toolkit not detected!';
-        document.getElementById('status')!.classList.add('error');
-        return;
-    }
+    if (opts.length != 0) {
+        for (let i = 0; i < opts.length; i++) {
+            const line = opts[i];
 
-    chatReader = new ChatBoxReader();
-    chatReader.find();
-
-    if (!chatReader.pos) {
-        document.getElementById('status')!.textContent = 'Chatbox not found. Make sure it\'s visible!';
-        document.getElementById('status')!.classList.add('error');
-        setTimeout(setupChatReader, 2000);
-        return;
-    }
-
-    document.getElementById('status')!.textContent = 'Monitoring chatbox...';
-    document.getElementById('status')!.classList.add('active');
-    document.getElementById('status')!.classList.remove('error');
-
-    readChat();
-}
-
-function readChat() {
-    if (!chatReader || !chatReader.pos) {
-        setupChatReader();
-        return;
-    }
-
-    try {
-        const chat = chatReader.read();
-
-        if (chat) {
-            for (let i = 0; i < chat.length; i++) {
-                const line = chat[i];
-                const lineText = line.text.trim();
-
-                if (!lastChatLines.includes(lineText) && lineText.includes('The catalyst of alteration contained')) {
-                    // Check if next line has the difficulty
-                    let fullText = lineText;
-                    if (i + 1 < chat.length) {
-                        const nextLine = chat[i + 1].text.trim();
-                        // If next line is just a difficulty marker, append it
-                        if (nextLine.match(/^\((easy|medium|hard|elite|master)\)$/i)) {
-                            fullText = lineText + ' ' + nextLine;
-                        }
-                    }
-
-                    const parsed = parseCatalystMessage(fullText);
-
-                    if (parsed) {
-                        catalystData.totalCatalysts++;
-
-                        if (catalystData.items[parsed.itemName]) {
-                            catalystData.items[parsed.itemName] += parsed.quantity;
-                        } else {
-                            catalystData.items[parsed.itemName] = parsed.quantity;
-                        }
-
-                        updateClueCount(parsed.itemName, parsed.quantity);
-                        saveData();
-                        updateDisplay();
-
-                        document.getElementById('status')!.textContent = `Tracked: ${parsed.quantity}x ${parsed.itemName}`;
-                        document.getElementById('status')!.classList.add('active');
-
-                        console.log(`Catalyst opened: ${parsed.quantity}x ${parsed.itemName}`);
-                    }
-                }
+            // Skip first line if no timestamp
+            if (!line.text.match(timestampRegex) && i == 0) {
+                continue;
             }
 
-            lastChatLines = chat.slice(0, 10).map(line => line.text.trim());
+            // Beginning of new chat line (has timestamp)
+            if (line.text.match(timestampRegex)) {
+                if (i > 0) {
+                    chatStr += "\n";
+                }
+                chatStr += line.text + " ";
+                continue;
+            }
+
+            // Continuation of previous line (no timestamp)
+            chatStr += line.text;
         }
-    } catch (e) {
-        console.error('Error reading chat:', e);
     }
 
-    setTimeout(readChat, 600);
+    if (chatStr.trim() != "") {
+        chatArr = chatStr.trim().split("\n");
+    }
+
+    return chatArr;
 }
+
+function isInHistory(chatLine: string): boolean {
+    return chatHistory.includes(chatLine.trim());
+}
+
+function updateChatHistory(chatLine: string) {
+    chatHistory.push(chatLine.trim());
+    // Keep only last 100 lines
+    if (chatHistory.length > 100) {
+        chatHistory.shift();
+    }
+}
+
+function readChatbox() {
+    const opts = reader.read() || [];
+    const chatArr = processChat(opts);
+
+    for (let chatLine of chatArr) {
+        chatLine = chatLine.trim();
+
+        if (isInHistory(chatLine)) {
+            console.log(`Found in history: ${chatLine}, skipping.`);
+            continue;
+        }
+
+        updateChatHistory(chatLine);
+
+        if (chatLine.includes('The catalyst of alteration contained')) {
+            console.log('Processing catalyst line:', chatLine);
+            const parsed = parseCatalystMessage(chatLine);
+            console.log('Parsed:', parsed);
+
+            if (parsed) {
+                catalystData.totalCatalysts++;
+
+                if (catalystData.items[parsed.itemName]) {
+                    catalystData.items[parsed.itemName] += parsed.quantity;
+                } else {
+                    catalystData.items[parsed.itemName] = parsed.quantity;
+                }
+
+                updateClueCount(parsed.itemName, parsed.quantity);
+                saveData();
+                updateDisplay();
+
+                document.getElementById('status')!.textContent = `Tracked: ${parsed.quantity}x ${parsed.itemName}`;
+                document.getElementById('status')!.classList.add('active');
+
+                console.log(`✓ Catalyst tracked: ${parsed.quantity}x ${parsed.itemName}`);
+            }
+        }
+    }
+}
+
+// Initialize
+window.setTimeout(function () {
+    reader.find();
+
+    let findChat = setInterval(function () {
+        if (reader.pos === null) {
+            reader.find();
+        } else {
+            clearInterval(findChat);
+
+            document.getElementById('status')!.textContent = 'Monitoring chatbox...';
+            document.getElementById('status')!.classList.add('active');
+            document.getElementById('status')!.classList.remove('error');
+
+            loadData();
+
+            setInterval(function () {
+                readChatbox();
+            }, 600);
+        }
+    }, 1000);
+}, 50);
 
 // Reset data
 document.addEventListener('DOMContentLoaded', () => {
@@ -203,17 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     master: 0
                 }
             };
+            chatHistory = [];
             saveData();
             updateDisplay();
             document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
             document.getElementById('status')!.classList.add('active');
         }
     });
-
-    // Initialize
-    loadData();
-
-    if (window.alt1) {
-        setupChatReader();
-    }
 });
