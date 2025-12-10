@@ -1,10 +1,6 @@
 import * as a1lib from "alt1";
 import ChatBoxReader from "alt1/chatbox";
 
-if (window.alt1) {
-    alt1.identifyAppUrl("./appconfig.json");
-}
-
 // Data storage
 let catalystData = {
     totalCatalysts: 0,
@@ -81,7 +77,8 @@ function normalizeItemName(itemName: string, originalText: string): string {
 
 // Parse chat message
 function parseCatalystMessage(text: string): { quantity: number, itemName: string } | null {
-    const catalystRegex = /The catalyst of alteration contained:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Handle space before colon and be flexible with format
+    const catalystRegex = /The catalyst of alteration contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     const match = text.match(catalystRegex);
 
     if (match) {
@@ -144,11 +141,22 @@ function readChat() {
         const chat = chatReader.read();
 
         if (chat) {
-            chat.forEach(line => {
+            for (let i = 0; i < chat.length; i++) {
+                const line = chat[i];
                 const lineText = line.text.trim();
 
-                if (!lastChatLines.includes(lineText) && lineText.includes('The catalyst of alteration contained:')) {
-                    const parsed = parseCatalystMessage(lineText);
+                if (!lastChatLines.includes(lineText) && lineText.includes('The catalyst of alteration contained')) {
+                    // Check if next line has the difficulty
+                    let fullText = lineText;
+                    if (i + 1 < chat.length) {
+                        const nextLine = chat[i + 1].text.trim();
+                        // If next line is just a difficulty marker, append it
+                        if (nextLine.match(/^\((easy|medium|hard|elite|master)\)$/i)) {
+                            fullText = lineText + ' ' + nextLine;
+                        }
+                    }
+
+                    const parsed = parseCatalystMessage(fullText);
 
                     if (parsed) {
                         catalystData.totalCatalysts++;
@@ -169,7 +177,7 @@ function readChat() {
                         console.log(`Catalyst opened: ${parsed.quantity}x ${parsed.itemName}`);
                     }
                 }
-            });
+            }
 
             lastChatLines = chat.slice(0, 10).map(line => line.text.trim());
         }
