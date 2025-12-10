@@ -4212,7 +4212,7 @@ if (window.alt1) {
 }
 var timestampRegex = /\[\d{2}:\d{2}:\d{2}\]/g;
 var reader = new (alt1_chatbox__WEBPACK_IMPORTED_MODULE_0___default())();
-// Use default colors - don't override, let it use all RS3 chat colors
+// Use default colors - Alt1's built-in color detection should handle RS3 chat
 // Data storage
 var catalystData = {
     totalCatalysts: 0,
@@ -4361,6 +4361,8 @@ function readChatbox() {
         });
     }
     var chatArr = processChat(opts);
+    // Store last few lines to look back when we find "sent to your bank"
+    var recentLines = [];
     for (var _i = 0, chatArr_1 = chatArr; _i < chatArr_1.length; _i++) {
         var chatLine = chatArr_1[_i];
         chatLine = chatLine.trim();
@@ -4374,7 +4376,43 @@ function readChatbox() {
         }
         updateChatHistory(chatLine);
         console.log('New chat line:', chatLine);
-        if (chatLine.includes('alteration contained')) {
+        // Add to recent lines buffer
+        recentLines.push(chatLine);
+        if (recentLines.length > 5) {
+            recentLines.shift(); // Keep only last 5 lines
+        }
+        // TRIGGER: "sent to your bank" - look back at previous lines!
+        if (chatLine.toLowerCase().includes('sent to your bank')) {
+            console.log('🏦 Found "sent to your bank" - checking previous lines...');
+            console.log('Recent lines:', recentLines);
+            // Check the last few lines for catalyst message
+            for (var i = recentLines.length - 1; i >= 0; i--) {
+                var prevLine = recentLines[i];
+                if (prevLine.includes('alteration contained') || prevLine.includes('aiteration contained')) {
+                    console.log('📦 Found catalyst message in history!');
+                    var parsed = parseCatalystMessage(prevLine);
+                    console.log('Parsed:', parsed);
+                    if (parsed) {
+                        catalystData.totalCatalysts++;
+                        if (catalystData.items[parsed.itemName]) {
+                            catalystData.items[parsed.itemName] += parsed.quantity;
+                        }
+                        else {
+                            catalystData.items[parsed.itemName] = parsed.quantity;
+                        }
+                        updateClueCount(parsed.itemName, parsed.quantity);
+                        saveData();
+                        updateDisplay();
+                        document.getElementById('status').textContent = "Tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName);
+                        document.getElementById('status').classList.add('active');
+                        console.log("\u2713 Catalyst tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName));
+                        break;
+                    }
+                }
+            }
+        }
+        // Primary detection: "alteration contained" line (in case it does read)
+        if (chatLine.includes('alteration contained') || chatLine.includes('aiteration contained')) {
             console.log('Processing catalyst line:', chatLine);
             var parsed = parseCatalystMessage(chatLine);
             console.log('Parsed:', parsed);
