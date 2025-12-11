@@ -1,11 +1,20 @@
 {
     "appName": "Catalyst Tracker",
+    "description": "Tracks items received from Catalyst of Alteration",
     "appUrl": "./index.html",
     "configUrl": "./appconfig.json",
+    "iconUrl": "./icon.png",
+    "defaultWidth": 220,
+    "defaultHeight": 250,
+    "minWidth": 200,
+    "minHeight": 200,
+    "maxWidth": 800,
+    "maxHeight": 1000,
     "requestPermissions": [
         "pixel",
         "gamestate",
         "overlay"
     ],
-    "permissions": "pixel,gamestate,overlay"
+    "permissions": "pixel,gamestate,overlay",
+    "loadInBrowser": true
 }
