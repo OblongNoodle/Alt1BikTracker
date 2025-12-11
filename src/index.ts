@@ -125,7 +125,11 @@ function parseCatalystMessage(text: string): { quantity: number, itemName: strin
             .replace(/ciue/gi, 'clue')
             .replace(/scroii/gi, 'scroll')
             .replace(/eiite/gi, 'elite')
-            .replace(/eiite/gi, 'elite');
+            .replace(/nard/gi, 'hard')
+            .replace(/eiegant/gi, 'elegant')
+            .replace(/\(nard\)/gi, '(hard)')
+            .replace(/\(eiite\)/gi, '(elite)')
+            .replace(/\(eiegant\)/gi, '(elegant)');
 
         itemName = normalizeItemName(itemName, text);
         return { quantity, itemName };
@@ -208,6 +212,7 @@ function readChatbox() {
 
     // Store last few lines to look back when we find "sent to your bank"
     let recentLines: string[] = [];
+    let processedInThisBatch = new Set<string>(); // Track what we've already processed
 
     for (let chatLine of chatArr) {
         chatLine = chatLine.trim();
@@ -240,6 +245,13 @@ function readChatbox() {
             // Check the last few lines for catalyst message (handle OCR typos)
             for (let i = recentLines.length - 1; i >= 0; i--) {
                 const prevLine = recentLines[i];
+
+                // Skip if we already processed this line
+                if (processedInThisBatch.has(prevLine)) {
+                    console.log('Already processed this catalyst, skipping duplicate');
+                    continue;
+                }
+
                 if (prevLine.includes('alteration contained') || prevLine.includes('aiteration contained') ||
                     prevLine.includes('cataiyst') || prevLine.includes('catalyst')) {
                     console.log('📦 Found catalyst message in history!');
@@ -247,6 +259,8 @@ function readChatbox() {
                     console.log('Parsed:', parsed);
 
                     if (parsed) {
+                        processedInThisBatch.add(prevLine); // Mark as processed
+
                         catalystData.totalCatalysts++;
 
                         if (catalystData.items[parsed.itemName]) {
@@ -270,12 +284,15 @@ function readChatbox() {
         }
 
         // Primary detection: "alteration contained" line (in case it does read)
-        if (chatLine.includes('alteration contained') || chatLine.includes('aiteration contained')) {
+        if ((chatLine.includes('alteration contained') || chatLine.includes('aiteration contained')) &&
+            !processedInThisBatch.has(chatLine)) {
             console.log('Processing catalyst line:', chatLine);
             const parsed = parseCatalystMessage(chatLine);
             console.log('Parsed:', parsed);
 
             if (parsed) {
+                processedInThisBatch.add(chatLine); // Mark as processed
+
                 catalystData.totalCatalysts++;
 
                 if (catalystData.items[parsed.itemName]) {
