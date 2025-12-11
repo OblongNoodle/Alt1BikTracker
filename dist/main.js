@@ -4507,24 +4507,25 @@ function setupResetButton() {
     var resetBtn = document.getElementById('resetBtn');
     console.log('Reset button found:', resetBtn);
     if (resetBtn) {
-        resetBtn.addEventListener('click', function () {
+        resetBtn.addEventListener('click', function (e) {
+            e.preventDefault();
             console.log('Reset button clicked!');
-            console.log('Before reset:', catalystData);
-            catalystData = {
-                totalCatalysts: 0,
-                items: {},
-                clues: {
-                    easy: 0,
-                    medium: 0,
-                    hard: 0,
-                    elite: 0,
-                    master: 0
-                }
+            console.log('Before reset:', JSON.stringify(catalystData));
+            catalystData.totalCatalysts = 0;
+            catalystData.items = {};
+            catalystData.clues = {
+                easy: 0,
+                medium: 0,
+                hard: 0,
+                elite: 0,
+                master: 0
             };
-            console.log('After reset:', catalystData);
+            console.log('After reset:', JSON.stringify(catalystData));
             chatHistory = [];
             saveData();
+            console.log('Data saved');
             updateDisplay();
+            console.log('Display updated');
             document.getElementById('status').textContent = 'Data reset. Monitoring chatbox...';
             document.getElementById('status').classList.add('active');
             console.log('Data reset complete');
