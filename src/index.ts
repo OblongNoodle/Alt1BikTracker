@@ -99,8 +99,8 @@ function normalizeItemName(itemName: string, originalText: string): string {
 // Parse chat message
 function parseCatalystMessage(text: string): { quantity: number, itemName: string } | null {
     // Match "alteration contained: X x ItemName" - handle OCR typos
-    // Look for: (a|ai)teration contained : number x item
-    const catalystRegex = /(?:a|ai)teration\s+contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Look for: catalyst/cataiyst + alteration/aiteration + contained : number x item
+    const catalystRegex = /(?:catalyst|cataiyst)?\s*(?:of)?\s*(?:alteration|aiteration)\s+contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     const match = text.match(catalystRegex);
 
     if (match) {
@@ -120,9 +120,11 @@ function parseCatalystMessage(text: string): { quantity: number, itemName: strin
             .replace(/\(eiegant\)/gi, '(elegant)');
 
         itemName = normalizeItemName(itemName, text);
+        console.log('After typo fixes and normalization:', itemName);
         return { quantity, itemName };
     }
 
+    console.log('Regex did not match. Text was:', text);
     return null;
 }
 

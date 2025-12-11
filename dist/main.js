@@ -4293,8 +4293,8 @@ function normalizeItemName(itemName, originalText) {
 // Parse chat message
 function parseCatalystMessage(text) {
     // Match "alteration contained: X x ItemName" - handle OCR typos
-    // Look for: (a|ai)teration contained : number x item
-    var catalystRegex = /(?:a|ai)teration\s+contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
+    // Look for: catalyst/cataiyst + alteration/aiteration + contained : number x item
+    var catalystRegex = /(?:catalyst|cataiyst)?\s*(?:of)?\s*(?:alteration|aiteration)\s+contained\s*:\s*(\d+)\s*x\s*(.+?)$/i;
     var match = text.match(catalystRegex);
     if (match) {
         var quantity = parseInt(match[1]);
@@ -4311,8 +4311,10 @@ function parseCatalystMessage(text) {
             .replace(/\(eiite\)/gi, '(elite)')
             .replace(/\(eiegant\)/gi, '(elegant)');
         itemName = normalizeItemName(itemName, text);
+        console.log('After typo fixes and normalization:', itemName);
         return { quantity: quantity, itemName: itemName };
     }
+    console.log('Regex did not match. Text was:', text);
     return null;
 }
 // Update clue counts
