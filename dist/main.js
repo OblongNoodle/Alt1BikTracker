@@ -4479,6 +4479,8 @@ window.setTimeout(function () {
             loadData();
             // Setup reset button now that we know DOM is ready
             setupResetButton();
+            // Setup manual adjustment buttons
+            setupAdjustButtons();
             setInterval(function () {
                 readChatbox();
             }, 600);
@@ -4517,6 +4519,29 @@ function setupResetButton() {
     else {
         console.error('Reset button not found!');
     }
+}
+// Setup manual adjustment buttons
+function setupAdjustButtons() {
+    console.log('Setting up adjust buttons...');
+    var buttons = document.querySelectorAll('.adjust-btn');
+    console.log('Found adjust buttons:', buttons.length);
+    buttons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var clueType = this.getAttribute('data-clue');
+            var action = this.getAttribute('data-action');
+            if (action === 'plus') {
+                catalystData.clues[clueType]++;
+                console.log("Incremented ".concat(clueType, " to ").concat(catalystData.clues[clueType]));
+            }
+            else if (action === 'minus' && catalystData.clues[clueType] > 0) {
+                catalystData.clues[clueType]--;
+                console.log("Decremented ".concat(clueType, " to ").concat(catalystData.clues[clueType]));
+            }
+            saveData();
+            updateDisplay();
+        });
+    });
 }
 
 })();

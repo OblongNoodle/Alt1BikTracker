@@ -323,6 +323,9 @@ window.setTimeout(function () {
             // Setup reset button now that we know DOM is ready
             setupResetButton();
 
+            // Setup manual adjustment buttons
+            setupAdjustButtons();
+
             setInterval(function () {
                 readChatbox();
             }, 600);
@@ -363,4 +366,30 @@ function setupResetButton() {
     } else {
         console.error('Reset button not found!');
     }
+}
+
+// Setup manual adjustment buttons
+function setupAdjustButtons() {
+    console.log('Setting up adjust buttons...');
+    const buttons = document.querySelectorAll('.adjust-btn');
+    console.log('Found adjust buttons:', buttons.length);
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const clueType = (this as HTMLElement).getAttribute('data-clue') as 'easy' | 'medium' | 'hard' | 'elite' | 'master';
+            const action = (this as HTMLElement).getAttribute('data-action');
+
+            if (action === 'plus') {
+                catalystData.clues[clueType]++;
+                console.log(`Incremented ${clueType} to ${catalystData.clues[clueType]}`);
+            } else if (action === 'minus' && catalystData.clues[clueType] > 0) {
+                catalystData.clues[clueType]--;
+                console.log(`Decremented ${clueType} to ${catalystData.clues[clueType]}`);
+            }
+
+            saveData();
+            updateDisplay();
+        });
+    });
 }
