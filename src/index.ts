@@ -347,9 +347,12 @@ window.setTimeout(function () {
 
 // Reset data - attach immediately since DOM might already be loaded
 function setupResetButton() {
+    console.log('Setting up reset button...');
     const resetBtn = document.getElementById('resetBtn');
+    console.log('Reset button found:', resetBtn);
     if (resetBtn) {
         resetBtn.addEventListener('click', function() {
+            console.log('Reset button clicked!');
             if (confirm('Are you sure you want to reset all tracked data? This cannot be undone!')) {
                 catalystData = {
                     totalCatalysts: 0,
@@ -367,12 +370,17 @@ function setupResetButton() {
                 updateDisplay();
                 document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
                 document.getElementById('status')!.classList.add('active');
+                console.log('Data reset complete');
             }
         });
+        console.log('Reset button event listener attached');
+    } else {
+        console.error('Reset button not found!');
     }
 }
 
 // Try to set up reset button immediately and on DOMContentLoaded
+console.log('Document ready state:', document.readyState);
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupResetButton);
 } else {
