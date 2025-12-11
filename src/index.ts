@@ -338,6 +338,9 @@ window.setTimeout(function () {
 
             loadData();
 
+            // Setup reset button now that we know DOM is ready
+            setupResetButton();
+
             setInterval(function () {
                 readChatbox();
             }, 600);
@@ -377,12 +380,4 @@ function setupResetButton() {
     } else {
         console.error('Reset button not found!');
     }
-}
-
-// Try to set up reset button immediately and on DOMContentLoaded
-console.log('Document ready state:', document.readyState);
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupResetButton);
-} else {
-    setupResetButton();
 }
