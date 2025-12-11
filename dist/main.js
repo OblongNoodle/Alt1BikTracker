@@ -4509,31 +4509,25 @@ function setupResetButton() {
     if (resetBtn) {
         resetBtn.addEventListener('click', function () {
             console.log('Reset button clicked!');
-            if (confirm('Are you sure you want to reset all tracked data? This cannot be undone!')) {
-                console.log('User confirmed reset');
-                console.log('Before reset:', catalystData);
-                catalystData = {
-                    totalCatalysts: 0,
-                    items: {},
-                    clues: {
-                        easy: 0,
-                        medium: 0,
-                        hard: 0,
-                        elite: 0,
-                        master: 0
-                    }
-                };
-                console.log('After reset:', catalystData);
-                chatHistory = [];
-                saveData();
-                updateDisplay();
-                document.getElementById('status').textContent = 'Data reset. Monitoring chatbox...';
-                document.getElementById('status').classList.add('active');
-                console.log('Data reset complete');
-            }
-            else {
-                console.log('User cancelled reset');
-            }
+            console.log('Before reset:', catalystData);
+            catalystData = {
+                totalCatalysts: 0,
+                items: {},
+                clues: {
+                    easy: 0,
+                    medium: 0,
+                    hard: 0,
+                    elite: 0,
+                    master: 0
+                }
+            };
+            console.log('After reset:', catalystData);
+            chatHistory = [];
+            saveData();
+            updateDisplay();
+            document.getElementById('status').textContent = 'Data reset. Monitoring chatbox...';
+            document.getElementById('status').classList.add('active');
+            console.log('Data reset complete');
         });
         console.log('Reset button event listener attached');
     }
