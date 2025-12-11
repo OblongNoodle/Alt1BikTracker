@@ -345,26 +345,36 @@ window.setTimeout(function () {
     }, 1000);
 }, 50);
 
-// Reset data
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('resetBtn')?.addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset all tracked data? This cannot be undone!')) {
-            catalystData = {
-                totalCatalysts: 0,
-                items: {},
-                clues: {
-                    easy: 0,
-                    medium: 0,
-                    hard: 0,
-                    elite: 0,
-                    master: 0
-                }
-            };
-            chatHistory = [];
-            saveData();
-            updateDisplay();
-            document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
-            document.getElementById('status')!.classList.add('active');
-        }
-    });
-});
+// Reset data - attach immediately since DOM might already be loaded
+function setupResetButton() {
+    const resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset all tracked data? This cannot be undone!')) {
+                catalystData = {
+                    totalCatalysts: 0,
+                    items: {},
+                    clues: {
+                        easy: 0,
+                        medium: 0,
+                        hard: 0,
+                        elite: 0,
+                        master: 0
+                    }
+                };
+                chatHistory = [];
+                saveData();
+                updateDisplay();
+                document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
+                document.getElementById('status')!.classList.add('active');
+            }
+        });
+    }
+}
+
+// Try to set up reset button immediately and on DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupResetButton);
+} else {
+    setupResetButton();
+}
