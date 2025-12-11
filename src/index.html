@@ -18,17 +18,22 @@
 	<link rel="stylesheet" type="text/css" href="https://runeapps.org/runeappslib.css" />
 	<style>
 		.adjust-btn {
-            font-size: 10px;
-            padding: 0px 4px;
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 6px;
             margin: 0 2px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 3px;
             color: #fff;
+            font-weight: bold;
         }
         .adjust-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #555;
+        }
+        .count-cell {
+            white-space: nowrap;
         }
 	</style>
 </head>
@@ -40,7 +45,7 @@
 	</div>
 	<div class="row ancient">
 		<div class="col mats">Easy</div>
-		<div class="col">
+		<div class="col count-cell">
 			<button class="adjust-btn" data-clue="easy" data-action="minus">-</button>
 			<span id="easyClues">0</span>
 			<button class="adjust-btn" data-clue="easy" data-action="plus">+</button>
@@ -48,7 +53,7 @@
 	</div>
 	<div class="row rare">
 		<div class="col mats">Medium</div>
-		<div class="col">
+		<div class="col count-cell">
 			<button class="adjust-btn" data-clue="medium" data-action="minus">-</button>
 			<span id="mediumClues">0</span>
 			<button class="adjust-btn" data-clue="medium" data-action="plus">+</button>
@@ -56,7 +61,7 @@
 	</div>
 	<div class="row uncommon">
 		<div class="col mats">Hard</div>
-		<div class="col">
+		<div class="col count-cell">
 			<button class="adjust-btn" data-clue="hard" data-action="minus">-</button>
 			<span id="hardClues">0</span>
 			<button class="adjust-btn" data-clue="hard" data-action="plus">+</button>
@@ -64,7 +69,7 @@
 	</div>
 	<div class="row common">
 		<div class="col mats">Elite</div>
-		<div class="col">
+		<div class="col count-cell">
 			<button class="adjust-btn" data-clue="elite" data-action="minus">-</button>
 			<span id="eliteClues">0</span>
 			<button class="adjust-btn" data-clue="elite" data-action="plus">+</button>
@@ -72,7 +77,7 @@
 	</div>
 	<div class="row common">
 		<div class="col mats">Master</div>
-		<div class="col">
+		<div class="col count-cell">
 			<button class="adjust-btn" data-clue="master" data-action="minus">-</button>
 			<span id="masterClues">0</span>
 			<button class="adjust-btn" data-clue="master" data-action="plus">+</button>
