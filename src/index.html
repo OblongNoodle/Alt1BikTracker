@@ -19,21 +19,30 @@
 	<style>
 		.adjust-btn {
             display: inline-block;
-            font-size: 11px;
-            padding: 2px 6px;
-            margin: 0 2px;
+            font-size: 10px;
+            padding: 1px 5px;
             cursor: pointer;
-            background: #333;
-            border: 1px solid #555;
+            background: linear-gradient(to bottom, #4a4a4a 0%, #2a2a2a 100%);
+            border: 1px solid #1a1a1a;
             border-radius: 3px;
             color: #fff;
             font-weight: bold;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         .adjust-btn:hover {
-            background: #555;
+            background: linear-gradient(to bottom, #5a5a5a 0%, #3a3a3a 100%);
         }
         .count-cell {
             white-space: nowrap;
+        }
+        .count-number {
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+        .adjust-btn:first-of-type {
+            margin-right: 3px;
         }
 	</style>
 </head>
@@ -46,40 +55,40 @@
 	<div class="row ancient">
 		<div class="col mats">Easy</div>
 		<div class="col count-cell">
+			<span class="count-number" id="easyClues">0</span>
 			<button class="adjust-btn" data-clue="easy" data-action="minus">-</button>
-			<span id="easyClues">0</span>
 			<button class="adjust-btn" data-clue="easy" data-action="plus">+</button>
 		</div>
 	</div>
 	<div class="row rare">
 		<div class="col mats">Medium</div>
 		<div class="col count-cell">
+			<span class="count-number" id="mediumClues">0</span>
 			<button class="adjust-btn" data-clue="medium" data-action="minus">-</button>
-			<span id="mediumClues">0</span>
 			<button class="adjust-btn" data-clue="medium" data-action="plus">+</button>
 		</div>
 	</div>
 	<div class="row uncommon">
 		<div class="col mats">Hard</div>
 		<div class="col count-cell">
+			<span class="count-number" id="hardClues">0</span>
 			<button class="adjust-btn" data-clue="hard" data-action="minus">-</button>
-			<span id="hardClues">0</span>
 			<button class="adjust-btn" data-clue="hard" data-action="plus">+</button>
 		</div>
 	</div>
 	<div class="row common">
 		<div class="col mats">Elite</div>
 		<div class="col count-cell">
+			<span class="count-number" id="eliteClues">0</span>
 			<button class="adjust-btn" data-clue="elite" data-action="minus">-</button>
-			<span id="eliteClues">0</span>
 			<button class="adjust-btn" data-clue="elite" data-action="plus">+</button>
 		</div>
 	</div>
 	<div class="row common">
 		<div class="col mats">Master</div>
 		<div class="col count-cell">
+			<span class="count-number" id="masterClues">0</span>
 			<button class="adjust-btn" data-clue="master" data-action="minus">-</button>
-			<span id="masterClues">0</span>
 			<button class="adjust-btn" data-clue="master" data-action="plus">+</button>
 		</div>
 	</div>
