@@ -71,6 +71,7 @@ function saveData() {
 
 // Update the display
 function updateDisplay() {
+    console.log('Updating display with data:', catalystData);
     document.getElementById('totalCatalysts')!.textContent = catalystData.totalCatalysts.toString();
     document.getElementById('easyClues')!.textContent = catalystData.clues.easy.toString();
     document.getElementById('mediumClues')!.textContent = catalystData.clues.medium.toString();
@@ -91,6 +92,7 @@ function updateDisplay() {
             </div>
         `).join('');
     }
+    console.log('Display updated');
 }
 
 // Normalize item names
@@ -357,6 +359,8 @@ function setupResetButton() {
         resetBtn.addEventListener('click', function() {
             console.log('Reset button clicked!');
             if (confirm('Are you sure you want to reset all tracked data? This cannot be undone!')) {
+                console.log('User confirmed reset');
+                console.log('Before reset:', catalystData);
                 catalystData = {
                     totalCatalysts: 0,
                     items: {},
@@ -368,12 +372,15 @@ function setupResetButton() {
                         master: 0
                     }
                 };
+                console.log('After reset:', catalystData);
                 chatHistory = [];
                 saveData();
                 updateDisplay();
                 document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
                 document.getElementById('status')!.classList.add('active');
                 console.log('Data reset complete');
+            } else {
+                console.log('User cancelled reset');
             }
         });
         console.log('Reset button event listener attached');
