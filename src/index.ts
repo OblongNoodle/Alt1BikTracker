@@ -78,20 +78,6 @@ function updateDisplay() {
     document.getElementById('hardClues')!.textContent = catalystData.clues.hard.toString();
     document.getElementById('eliteClues')!.textContent = catalystData.clues.elite.toString();
     document.getElementById('masterClues')!.textContent = catalystData.clues.master.toString();
-
-    const itemsList = document.getElementById('itemsList')!;
-
-    if (Object.keys(catalystData.items).length === 0) {
-        itemsList.innerHTML = '<div style="color: #aaa; text-align: center; padding: 20px;">No items tracked yet. Open some catalysts!</div>';
-    } else {
-        const sortedItems = Object.entries(catalystData.items).sort((a, b) => b[1] - a[1]);
-        itemsList.innerHTML = sortedItems.map(([item, count]) => `
-            <div class="item-row">
-                <span class="item-name">${item}</span>
-                <span class="item-count">${count}</span>
-            </div>
-        `).join('');
-    }
     console.log('Display updated');
 }
 
@@ -275,8 +261,6 @@ function readChatbox() {
                         saveData();
                         updateDisplay();
 
-                        document.getElementById('status')!.textContent = `Tracked: ${parsed.quantity}x ${parsed.itemName}`;
-                        document.getElementById('status')!.classList.add('active');
 
                         console.log(`✓ Catalyst tracked: ${parsed.quantity}x ${parsed.itemName}`);
                         break;
@@ -307,9 +291,6 @@ function readChatbox() {
                 saveData();
                 updateDisplay();
 
-                document.getElementById('status')!.textContent = `Tracked: ${parsed.quantity}x ${parsed.itemName}`;
-                document.getElementById('status')!.classList.add('active');
-
                 console.log(`✓ Catalyst tracked: ${parsed.quantity}x ${parsed.itemName}`);
             }
         }
@@ -334,9 +315,6 @@ window.setTimeout(function () {
                 console.log('Selected mainbox:', reader.pos.mainbox);
             }
 
-            document.getElementById('status')!.textContent = 'Monitoring chatbox...';
-            document.getElementById('status')!.classList.add('active');
-            document.getElementById('status')!.classList.remove('error');
 
             loadData();
 
@@ -377,8 +355,6 @@ function setupResetButton() {
             console.log('Data saved');
             updateDisplay();
             console.log('Display updated');
-            document.getElementById('status')!.textContent = 'Data reset. Monitoring chatbox...';
-            document.getElementById('status')!.classList.add('active');
             console.log('Data reset complete');
         });
         console.log('Reset button event listener attached');

@@ -4271,17 +4271,6 @@ function updateDisplay() {
     document.getElementById('hardClues').textContent = catalystData.clues.hard.toString();
     document.getElementById('eliteClues').textContent = catalystData.clues.elite.toString();
     document.getElementById('masterClues').textContent = catalystData.clues.master.toString();
-    var itemsList = document.getElementById('itemsList');
-    if (Object.keys(catalystData.items).length === 0) {
-        itemsList.innerHTML = '<div style="color: #aaa; text-align: center; padding: 20px;">No items tracked yet. Open some catalysts!</div>';
-    }
-    else {
-        var sortedItems = Object.entries(catalystData.items).sort(function (a, b) { return b[1] - a[1]; });
-        itemsList.innerHTML = sortedItems.map(function (_a) {
-            var item = _a[0], count = _a[1];
-            return "\n            <div class=\"item-row\">\n                <span class=\"item-name\">".concat(item, "</span>\n                <span class=\"item-count\">").concat(count, "</span>\n            </div>\n        ");
-        }).join('');
-    }
     console.log('Display updated');
 }
 // Normalize item names
@@ -4440,8 +4429,6 @@ function readChatbox() {
                         updateClueCount(parsed.itemName, parsed.quantity);
                         saveData();
                         updateDisplay();
-                        document.getElementById('status').textContent = "Tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName);
-                        document.getElementById('status').classList.add('active');
                         console.log("\u2713 Catalyst tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName));
                         break;
                     }
@@ -4466,8 +4453,6 @@ function readChatbox() {
                 updateClueCount(parsed.itemName, parsed.quantity);
                 saveData();
                 updateDisplay();
-                document.getElementById('status').textContent = "Tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName);
-                document.getElementById('status').classList.add('active');
                 console.log("\u2713 Catalyst tracked: ".concat(parsed.quantity, "x ").concat(parsed.itemName));
             }
         }
@@ -4489,9 +4474,6 @@ window.setTimeout(function () {
                 reader.pos.mainbox = reader.pos.boxes[0];
                 console.log('Selected mainbox:', reader.pos.mainbox);
             }
-            document.getElementById('status').textContent = 'Monitoring chatbox...';
-            document.getElementById('status').classList.add('active');
-            document.getElementById('status').classList.remove('error');
             loadData();
             // Setup reset button now that we know DOM is ready
             setupResetButton();
@@ -4526,8 +4508,6 @@ function setupResetButton() {
             console.log('Data saved');
             updateDisplay();
             console.log('Display updated');
-            document.getElementById('status').textContent = 'Data reset. Monitoring chatbox...';
-            document.getElementById('status').classList.add('active');
             console.log('Data reset complete');
         });
         console.log('Reset button event listener attached');
